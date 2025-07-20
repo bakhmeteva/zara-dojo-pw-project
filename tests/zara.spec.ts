@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from '../src/pages/BasePage.po';
-import { SearchComponent } from '../src/pages/SearchComponent.po';
 import { SearchResultPage } from '../src/pages/SearchResultPage.po';
 import { ProductPage } from '../src/pages/ProductPage.po';
 import { CartPage } from '../src/pages/CartPage.po';
 import { RegistrationPage } from '../src/pages/RegistrationPage.po';
+import { SearchComponent } from '../src/pages/SearchComponent.po';
 
 
 test.describe('Zara Website Tests', () => {
@@ -17,14 +17,24 @@ test.describe('Zara Website Tests', () => {
     const cartPage = new CartPage(page);
     const registrationPage = new RegistrationPage(page);
 
-    await page.goto('/ua');
-    await basePage.handleCookiesModal();
+    await page.goto('https://www.zara.com');
+    await basePage.clickRejectCookies();
+    await basePage.clickOnContinueButton();
 
-    await searchComponent.openSearch();
-    await searchComponent.searchForProduct('dress');
-    await searchResultPage.waitForResults();
-    await searchResultPage.clickFirstAvailableProduct();
-    await productPage.addAllSizesToCart();
+    await searchComponent.selectCategory('DRESSES')
+    // await searchComponent.openMenu();
+    // await searchComponent.clickCategory('DRESSES')
+
+    await searchResultPage.selectDifferentSizes(0,
+      `S`, `M`, `L`, `XS`);
+
+    await searchResultPage.clickOnShoppingBag();
+
+    //await cartPage.
+
+
+
+
 
     await cartPage.goToCart();
     await cartPage.proceedToCheckout();

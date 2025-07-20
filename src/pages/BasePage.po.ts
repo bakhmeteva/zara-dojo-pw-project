@@ -7,7 +7,6 @@ export class BasePage {
     this.page = page;
   }
 
-  // Cookie modal selectors and methods
   async handleCookiesModal() {
     await this.page.waitForLoadState('domcontentloaded');
 
@@ -35,4 +34,17 @@ export class BasePage {
 
     console.log('No cookie modal found or already handled');
   }
+
+  async clickRejectCookies() {
+    await this.page.locator(`button#onetrust-reject-all-handler`).click();
+  }
+
+  async clickOnContinueButton () {
+    await this.page.locator('button[data-qa-action="go-to-store"]').click();
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+
 }
+
+
+
