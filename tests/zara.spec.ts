@@ -6,14 +6,12 @@ import { CartPage } from '../src/pages/CartPage.po';
 import { RegistrationPage } from '../src/pages/RegistrationPage.po';
 import { SearchComponent } from '../src/pages/SearchComponent.po';
 
-
 test.describe('Zara Website Tests', () => {
-
   test('Complete user journey: cookies, search, add to cart, registration', async ({ page }) => {
     const basePage = new BasePage(page);
     const searchComponent = new SearchComponent(page);
     const searchResultPage = new SearchResultPage(page);
-    const productPage = new ProductPage(page);
+    //const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const registrationPage = new RegistrationPage(page);
 
@@ -21,24 +19,17 @@ test.describe('Zara Website Tests', () => {
     await basePage.clickRejectCookies();
     await basePage.clickOnContinueButton();
 
-    await searchComponent.selectCategory('DRESSES')
-    // await searchComponent.openMenu();
-    // await searchComponent.clickCategory('DRESSES')
-
-    await searchResultPage.selectDifferentSizes(0,
-      `S`, `M`, `L`, `XS`);
+    await searchComponent.selectCategory('DRESSES');
+    await searchResultPage.selectDifferentSizes(0, `S`, `M`, `L`, `XS`);
 
     await searchResultPage.clickOnShoppingBag();
+    await cartPage.verifyCartItemsCount(4);
+    await cartPage.deleteItemBySize(`M`, `S`);
+    await cartPage.verifyCartItemsCount(2);
+    await cartPage.clickToContinueButton();
+    await registrationPage.clickRegisterButton();
 
-    //await cartPage.
-
-
-
-
-
-    await cartPage.goToCart();
-    await cartPage.proceedToCheckout();
-    await registrationPage.testInvalidRegistration();
+    await registrationPage.loginWithFakeData();
   });
 
   test('Search functionality test', async ({ page }) => {

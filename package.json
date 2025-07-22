@@ -45,5 +45,8 @@
     "string-format": "^2.0.0",
     "ts-node": "^10.9.2",
     "xmldom": "^0.6.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.9.0"
   }
 }
