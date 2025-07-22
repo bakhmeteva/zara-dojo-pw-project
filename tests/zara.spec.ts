@@ -29,7 +29,7 @@ test.describe('Zara Website Tests', () => {
     await cartPage.clickToContinueButton();
     await registrationPage.clickRegisterButton();
 
-    await registrationPage.loginWithFakeData();
+    //await registrationPage.loginWithFakeData();
   });
 
   test('Search functionality test', async ({ page }) => {
