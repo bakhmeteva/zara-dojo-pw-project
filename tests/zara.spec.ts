@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { BasePage } from '../src/pages/BasePage.po';
 import { SearchResultPage } from '../src/pages/SearchResultPage.po';
-import { ProductPage } from '../src/pages/ProductPage.po';
+
 import { CartPage } from '../src/pages/CartPage.po';
-//import { RegistrationPage } from '../src/pages/RegistrationPage.po';
+
 import { SearchComponent } from '../src/pages/SearchComponent.po';
 import { RegistrationPage } from '../src/pages/RegistrationPage.po';
 
