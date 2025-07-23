@@ -77,8 +77,6 @@ export class SearchResultPage {
       await this.clickOnSize(size);
       await this.clickCloseConfirmSelect();
     }
-
-    console.log(`Here`);
   }
 
   async clickOnShoppingBag (){
