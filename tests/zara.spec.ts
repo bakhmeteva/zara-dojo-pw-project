@@ -37,10 +37,6 @@ test('Complete user journey: cookies, search, add to cart, registration', async 
     `NameRequired field.`,
   );
 
-  //await registrationPage.verifyErrorIconVisible();
-
   await registrationPage.registerWithFakeData();
   await registrationPage.checkBotWarning();
-  //await registrationPage.clickRegisterButton();
-  //await registrationPage.clickAcceptPrivacyPolicy();
 });

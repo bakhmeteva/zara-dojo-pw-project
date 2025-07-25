@@ -7,7 +7,6 @@
 ```
 ├── src/pages/           # Page Object моделі та локатори
 ├── tests/               # E2E тести
-├── tests-examples/      # Приклади тестів (можна видалити або винести)
 ├── playwright.config.ts # Конфігурація Playwright
 ├── tsconfig.json        # Конфігурація TypeScript
 ├── package.json         # Залежності та npm-скрипти
