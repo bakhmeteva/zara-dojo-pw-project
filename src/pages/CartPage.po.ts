@@ -43,7 +43,7 @@ export class CartPage {
         const itemText = await item.locator('.shop-cart-item-details-base__size').textContent();
         if (itemText?.trim() === partName) {
           await item.locator('.zds-quantity-selector__decrease').click();
-          await this.page.waitForTimeout(200);
+          await this.page.waitForTimeout(300);
           break; // після видалення — до наступного partName
         }
       }
