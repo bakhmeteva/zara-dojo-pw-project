@@ -36,9 +36,12 @@ export class BasePage {
   }
 
   async clickRejectCookies() {
-    await this.page.locator(`button#onetrust-reject-all-handler`).click();
+    const rejectButton = this.page.locator('button#onetrust-reject-all-handler');
+    const isVisible = await rejectButton.isVisible({ timeout: 5000 });
+    if (isVisible) {
+      await rejectButton.click();
+    }
   }
-
   async clickOnContinueButton () {
     await this.page.locator('button[data-qa-action="go-to-store"]').click();
     await new Promise(resolve => setTimeout(resolve, 2000));
