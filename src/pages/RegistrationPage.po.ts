@@ -44,7 +44,6 @@ export class RegistrationPage {
     await this.nameInput.fill(name);
     await this.surnameInput.fill(surname);
     await this.surnameInput.press('Tab');
-    //await this.privacyPolicy.click();
     await this.privacyPolicy.click();
     await this.createAccountButton.click();
 
@@ -72,8 +71,7 @@ export class RegistrationPage {
       let isExist = false;
       for (const item of errorsFromPage) {
         const itemText = await item.textContent();
-        // @ts-ignore
-        if (itemText.trim() === error) {
+        if (itemText && itemText.trim() === error) {
           isExist = true;
           break;
         }
@@ -81,10 +79,6 @@ export class RegistrationPage {
       expect(isExist, `${error} exist`).toBe(true);
     }
   }
-
-  // async clickAcceptPrivacyPolicy(): Promise<void> {
-  //   await this.page.locator('[data-qa-id="zds-alert-dialog-accept-button"]').click();
-  // }
 
   async checkBotWarning() {
     await this.page.locator('button[data-qa-id="close-modal"]').click();
