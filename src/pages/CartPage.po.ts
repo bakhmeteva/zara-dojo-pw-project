@@ -42,7 +42,6 @@ export class CartPage {
       for (const item of items) {
         const itemText = await item.locator('.shop-cart-item-details-base__size').textContent();
         if (itemText?.trim() === partName) {
-          console.log(`Deleting item: ${partName}`);
           await item.locator('.zds-quantity-selector__decrease').click();
           await this.page.waitForTimeout(200);
           break; // після видалення — до наступного partName

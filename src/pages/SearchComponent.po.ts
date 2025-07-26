@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { th } from '@faker-js/faker';
 
 export class SearchComponent {
   readonly page: Page;
@@ -8,6 +9,8 @@ export class SearchComponent {
   readonly searchSuggestions: Locator;
   readonly menuButton: Locator;
   readonly closeMenu: Locator;
+  readonly filterBtn: Locator;
+  readonly filterField: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,6 +20,8 @@ export class SearchComponent {
     this.searchSuggestions = page.locator('.search-suggestions, .autocomplete-suggestions');
     this.menuButton = page.locator('button[data-qa-id="layout-header-toggle-menu"]');
     this.closeMenu = page.locator('button[data-qa-id="layout-header-close"]');
+    this.filterBtn = page.locator('[data-qa-id="header-search-text-link"]');
+    this.filterField = page.locator('#search-home-form-combo-input');
   }
 
   async openSearch() {
@@ -43,5 +48,11 @@ export class SearchComponent {
 
   async clickCategory(categoryName: string) {
     await this.page.locator('a[data-qa-action="unfold-category"]', { hasText: categoryName }).click();
+  }
+
+  async searchProductByName(productName: string) {
+    await this.filterBtn.click();
+    await this.filterField.fill(productName);
+    await this.filterField.press(`Enter`)
   }
 }

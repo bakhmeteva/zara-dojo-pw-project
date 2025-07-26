@@ -34,7 +34,7 @@ export class SearchResultPage {
 
   async getProductCount(): Promise<number> {
     await this.waitForResults();
-    return await this.productItems.count();
+    return this.productItems.count();
   }
 
   async clickOnProduct(index: number = 0) {
@@ -50,8 +50,9 @@ export class SearchResultPage {
     }
   }
 
-  async clickAddToBagButton(index: number = 0) {
-    const button = this.addToBagButtons.nth(index);
+  async clickAddToBagButton(productName: string) {
+    const product = this.page.locator(`xpath=.//h3[text()='${productName}']/ancestor::li[contains(@class, "product-grid-product")]`);
+    const button = product.locator(this.addToBagButtons);
     await expect(button).toBeVisible();
     await button.click();
   }
@@ -66,12 +67,12 @@ export class SearchResultPage {
 
   /**
    * Метод для вибору різних розмірів товару в циклі
-   * @param productIndex - індекс товару (за замовчуванням 0)
+   * @param productName
    * @param sizes - масив розмірів
    */
-  async selectDifferentSizes(productIndex: number = 0, ...sizes: string[]) {
+  async selectDifferentSizes(productName: string, ...sizes: string[]) {
     for (const size of sizes) {
-      await this.clickAddToBagButton(productIndex);
+      await this.clickAddToBagButton(productName);
       // Очікуємо появи модального вікна з розмірами
       await expect(this.sizeModal).toBeVisible({ timeout: 5000 });
       await this.clickOnSize(size);
