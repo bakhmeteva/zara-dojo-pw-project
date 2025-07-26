@@ -51,6 +51,7 @@ export class SearchResultPage {
   }
 
   async clickAddToBagButton(productName: string) {
+    await expect(this.addToBagButtons.first()).toBeVisible({ timeout: 5000 });
     const product = this.page.locator(`xpath=.//h3[text()='${productName}']/ancestor::li[contains(@class, "product-grid-product")]`);
     const button = product.locator(this.addToBagButtons);
     await expect(button).toBeVisible();

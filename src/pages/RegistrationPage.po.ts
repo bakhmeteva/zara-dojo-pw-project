@@ -33,6 +33,7 @@ export class RegistrationPage {
 
 
   async registerWithFakeData() {
+    await expect(this.nameInput).toBeVisible({ timeout: 10000 });
     const name = faker.person.firstName();
     const surname = faker.person.lastName();
     const email = faker.internet.email();
@@ -51,6 +52,7 @@ export class RegistrationPage {
   }
 
   async registerWithInvalidData() {
+    await expect(this.nameInput).toBeVisible({ timeout: 10000 });
     const invalidName = '';
     const invalidSurname = '';
     const invalidEmail = 'invalid-email';
@@ -61,15 +63,10 @@ export class RegistrationPage {
     await this.emailInput.fill(invalidEmail);
     await this.passwordInput.fill(invalidPassword);
     await this.createAccountButton.click();
-
-
   }
 
-  // async clickCreateAccountButton(): Promise<void> {
-  //   await this.page.locator('[data-qa-action="sign-up-submit"]').click();
-  // }
-
   async verifyRegistrationErrors(...errors: string[]): Promise<void> {
+    await expect(this.error.first()).toBeVisible({ timeout: 10000 });
     const errorsFromPage = await this.error.all();
     for (const error of errors) {
       let isExist = false;
