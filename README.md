@@ -12,6 +12,7 @@
 ├── package.json         # Залежності та npm-скрипти
 ├── playwright-report/   # Автоматично згенеровані звіти
 ├── test-results/        # Результати запуску тестів
+├── .github/workflows/   # CI/CD workflow для GitHub Actions
 ```
 
 ## Швидкий старт
@@ -22,7 +23,7 @@
    npm install
    ```
 
-2. **Запуск тестів:**
+2. **Запуск тестів локально:**
 
    ```bash
    npx playwright test
@@ -34,6 +35,15 @@
    ```bash
    npx playwright show-report
    ```
+
+## Автоматичний запуск тестів (CI)
+
+У проєкті налаштовано автоматичний запуск тестів у GitHub Actions. Workflow знаходиться у `.github/workflows/playwright.yml` і виконується при кожному push або pull request до гілки `main` .
+
+**Що відбувається у CI:**
+- Встановлюються залежності та браузери Playwright
+- Запускаються всі тести
+- Зберігаються артефакти: звіти та результати тестів
 
 ## Рекомендації
 
