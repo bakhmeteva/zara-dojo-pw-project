@@ -2,14 +2,8 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class SearchResultPage {
   readonly page: Page;
-  //readonly productItems: Locator;
-  //readonly productLinks: Locator;
-  //readonly loadMoreButton: Locator;
-  //readonly resultsCount: Locator;
-  //readonly noResultsMessage: Locator;
   readonly addToBagButtons: Locator;
   readonly sizeButtons: Locator;
-  //readonly sizeModal: Locator;
   readonly shoppingBag: Locator;
   readonly items: Locator;
 
