@@ -9,7 +9,7 @@ test('Golden pass: Reject cookies, search product, manage cart, and register wit
            cartPage,
            registrationPage,
          }) => {
-    const productName = `FLORAL PRINT MIDI DRESS`;
+    const productName = `DRESS`;
 
     await test.step(`main page open`, async () => {
       await page.goto('');
@@ -17,15 +17,16 @@ test('Golden pass: Reject cookies, search product, manage cart, and register wit
       await basePage.clickOnContinueButton();
     });
 
+    let sizes: string[] = [];
     await test.step(`add items to shopping bag`, async () => {
       await searchComponent.searchProductByName(productName);
-      await searchResultPage.selectDifferentSizes(productName, `S`, `M`, `L`, `XS`);
+      sizes = await searchResultPage.selectSizesOfAnyItemFromSearchResult(4);
     });
 
     await test.step(`shopping bag actions`, async () => {
       await searchResultPage.clickOnShoppingBag();
       await cartPage.verifyCartItemsCount(4);
-      await cartPage.deleteItemBySize(`M`, `S`);
+      await cartPage.deleteItemBySize(sizes[1], sizes[3]);
       await cartPage.verifyCartItemsCount(2);
       await cartPage.clickToContinueButton();
     });
