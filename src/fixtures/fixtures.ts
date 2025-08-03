@@ -5,7 +5,6 @@ import { SearchResultPage } from '../pages/SearchResultPage.po';
 import { CartPage } from '../pages/CartPage.po';
 import { RegistrationPage } from '../pages/RegistrationPage.po';
 
-// Расширяем типы фикстур
 type PageObjects = {
   basePage: BasePage;
   searchComponent: SearchComponent;
@@ -14,7 +13,6 @@ type PageObjects = {
   registrationPage: RegistrationPage;
 };
 
-// Создаем фикстуру с Page Object моделями
 export const test = base.extend<PageObjects>({
   basePage: async ({ page }, use) => {
     await use(new BasePage(page));
