@@ -6,7 +6,7 @@ export class SearchResultPage {
   readonly sizeButtons: Locator;
   readonly shoppingBag: Locator;
   readonly items: Locator;
-
+  readonly closeConfirmButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -14,11 +14,11 @@ export class SearchResultPage {
     this.sizeButtons = page.locator('button[data-qa-action="size-in-stock"]');
     this.shoppingBag = page.locator('[data-qa-id="layout-header-go-to-cart-items-count"]');
     this.items = page.locator(`.product-grid-product`);
-
+    this.closeConfirmButton = page.locator(`button[aria-label="close"]`);
   }
 
   async clickCloseConfirmSelect() {
-    await this.page.locator(`button[aria-label="close"]`).click();
+    await this.closeConfirmButton.click();
   }
 
   /**
