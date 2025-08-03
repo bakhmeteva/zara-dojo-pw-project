@@ -1,42 +1,48 @@
-import { test } from '@playwright/test';
-import { BasePage } from '../src/pages/BasePage.po';
-import { SearchResultPage } from '../src/pages/SearchResultPage.po';
+import { test } from '../src/fixtures/fixtures';
 
-import { CartPage } from '../src/pages/CartPage.po';
+test('Golden pass: Reject cookies, search product, manage cart, and register with validation',
+  async ({
+           page,
+           basePage,
+           searchComponent,
+           searchResultPage,
+           cartPage,
+           registrationPage,
+         }) => {
+    const productName = `DRESS`;
 
-import { SearchComponent } from '../src/pages/SearchComponent.po';
-import { RegistrationPage } from '../src/pages/RegistrationPage.po';
+    await test.step(`main page open`, async () => {
+      await page.goto('');
+      await basePage.clickRejectCookies();
+      await basePage.clickOnContinueButton();
+    });
 
-test('Golden pass: Reject cookies, search product, manage cart, and register with validation', async ({ page }) => {
-  const basePage = new BasePage(page);
-  const searchComponent = new SearchComponent(page);
-  const searchResultPage = new SearchResultPage(page);
-  const cartPage = new CartPage(page);
-  const registrationPage = new RegistrationPage(page);
-  const productName = `FLORAL PRINT MIDI DRESS`;
+    let sizes: string[] = [];
+    await test.step(`add items to shopping bag`, async () => {
+      await searchComponent.searchProductByName(productName);
+      sizes = await searchResultPage.selectSizesOfAnyItemFromSearchResult(4);
+    });
 
-  await page.goto('https://www.zara.com');
-  await basePage.clickRejectCookies();
-  await basePage.clickOnContinueButton();
+    await test.step(`shopping bag actions`, async () => {
+      await searchResultPage.clickOnShoppingBag();
+      await cartPage.verifyCartItemsCount(4);
+      await cartPage.deleteItemBySize(sizes[1], sizes[3]);
+      await cartPage.verifyCartItemsCount(2);
+      await cartPage.clickToContinueButton();
+    });
 
-  await searchComponent.searchProductByName(productName);
-  await searchResultPage.selectDifferentSizes(productName, `S`, `M`, `L`, `XS`);
+    await registrationPage.clickRegisterButton();
 
-  await searchResultPage.clickOnShoppingBag();
-  await cartPage.verifyCartItemsCount(4);
-  await cartPage.deleteItemBySize(`M`, `S`);
-  await cartPage.verifyCartItemsCount(2);
-  await cartPage.clickToContinueButton();
-  await registrationPage.clickRegisterButton();
+    await test.step(`negative registration checks`, async () => {
+      await registrationPage.registerWithInvalidData();
+      await registrationPage.verifyRegistrationErrors(
+        `E-mailEnter a valid email address (example: email@email.com).`,
+        `PasswordEnter a secure password: At least 8 characters long, containing uppercase and lowercase letters and numbers.`,
+        `NameRequired field.`,
+        `NameRequired field.`,
+      );
+    });
 
-  await registrationPage.registerWithInvalidData();
-  await registrationPage.verifyRegistrationErrors(
-    `E-mailEnter a valid email address (example: email@email.com).`,
-    `PasswordEnter a secure password: At least 8 characters long, containing uppercase and lowercase letters and numbers.`,
-    `NameRequired field.`,
-    `NameRequired field.`,
-  );
-
-  await registrationPage.registerWithFakeData();
-  await registrationPage.checkBotWarning();
-});
+    await registrationPage.registerWithFakeData();
+    await registrationPage.checkBotWarning();
+  });

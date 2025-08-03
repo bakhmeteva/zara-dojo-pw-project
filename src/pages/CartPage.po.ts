@@ -2,31 +2,19 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class CartPage {
   readonly page: Page;
-  readonly cartIcon: Locator;
-  readonly checkoutButton: Locator;
   readonly cardItem: Locator;
-
+  readonly continueButton: Locator;
+  readonly itemSize: Locator;
+  readonly decreaseQuantityButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.cartIcon = page.locator('.shopping-bag, .cart-icon, [data-testid="cart"], a[href*="cart"], button:has-text("Cart")');
-    this.checkoutButton = page.locator('button:has-text("Checkout"), button:has-text("Proceed"), button:has-text("Оформити замовлення"), .checkout-button, [data-testid="checkout"]');
     this.cardItem = page.locator('.shop-cart-item');
+    this.continueButton = page.locator('[data-qa-id="shop-continue"]');
+    this.itemSize = page.locator('.shop-cart-item-details-base__size');
+    this.decreaseQuantityButton = page.locator('.zds-quantity-selector__decrease');
   }
 
-  async goToCart() {
-    if (await this.cartIcon.isVisible({ timeout: 3000 })) {
-      await this.cartIcon.click();
-      await this.page.waitForLoadState('networkidle');
-    }
-  }
-
-  async proceedToCheckout() {
-    if (await this.checkoutButton.isVisible({ timeout: 5000 })) {
-      await this.checkoutButton.click();
-      await this.page.waitForLoadState('networkidle');
-    }
-  }
 
   async verifyCartItemsCount(itemsCount: number) {
     await this.cardItem.first().waitFor({ state: 'visible' });
@@ -36,24 +24,25 @@ export class CartPage {
 
   async deleteItemBySize(...partNames: string[]) {
     for (const partName of partNames) {
-      // Перечитуємо елементи після кожного видалення
       const items = await this.cardItem.all();
 
       for (const item of items) {
-        const itemText = await item.locator('.shop-cart-item-details-base__size').textContent();
-        if (itemText?.trim() === partName) {
-          await item.locator('.zds-quantity-selector__decrease').click();
+        const itemText = await item.locator(this.itemSize).textContent();
+
+        // видаляємо переноси строк для WebKit
+        const cleanItemText = itemText ? itemText.replace(/\n/g, '').trim() : '';
+        const cleanPartName = partName.replace(/\n/g, '').trim();
+        
+        if (cleanItemText === cleanPartName) {
+          await item.locator(this.decreaseQuantityButton).click();
           await this.page.waitForTimeout(300);
-          break; // після видалення — до наступного partName
+          break;
         }
       }
     }
   }
 
   async clickToContinueButton(): Promise<void> {
-    await this.page.locator('[data-qa-id="shop-continue"]').click();
+    await this.continueButton.click();
   }
-
-
-
 }

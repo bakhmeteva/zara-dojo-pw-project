@@ -1,49 +1,24 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
+  readonly rejectCookiesButton: Locator;
+  readonly continueButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-  }
-
-  async handleCookiesModal() {
-    await this.page.waitForLoadState('domcontentloaded');
-
-    const cookieSelectors = [
-      '#onetrust-accept-btn-handler',
-      '.cookie-accept',
-      'button:has-text("Accept")',
-      'button:has-text("Прийняти")',
-      'button:has-text("Accept all")',
-      '[data-testid="cookie-accept"]'
-    ];
-
-    for (const selector of cookieSelectors) {
-      try {
-        const element = this.page.locator(selector);
-        if (await element.isVisible({ timeout: 3000 })) {
-          await element.click();
-          console.log('Cookie modal handled successfully');
-          return;
-        }
-      } catch (error) {
-        continue;
-      }
-    }
-
-    console.log('No cookie modal found or already handled');
+    this.rejectCookiesButton = page.locator('button#onetrust-reject-all-handler');
+    this.continueButton = page.locator('button[data-qa-action="go-to-store"]');
   }
 
   async clickRejectCookies() {
-    const rejectButton = this.page.locator('button#onetrust-reject-all-handler');
-    await rejectButton.click();
-  }
-  async clickOnContinueButton () {
-    await this.page.locator('button[data-qa-action="go-to-store"]').click();
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await this.rejectCookiesButton.click();
   }
 
+  async clickOnContinueButton() {
+    await this.continueButton.click();
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
 }
 
 
