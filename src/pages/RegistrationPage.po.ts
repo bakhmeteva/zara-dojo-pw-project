@@ -3,14 +3,16 @@ import { faker } from '@faker-js/faker';
 import { test } from '../fixtures/fixtures';
 
 export class RegistrationPage {
-  page: Page;
-  emailInput: Locator;
-  passwordInput: Locator;
-  nameInput: Locator;
-  surnameInput: Locator;
-  privacyPolicy: Locator;
-  createAccountButton: Locator;
-  error: Locator;
+  readonly page: Page;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly nameInput: Locator;
+  readonly surnameInput: Locator;
+  readonly privacyPolicy: Locator;
+  readonly createAccountButton: Locator;
+  readonly error: Locator;
+  readonly registerButton: Locator;
+  readonly closeModalButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,18 +23,15 @@ export class RegistrationPage {
     this.privacyPolicy = page.locator(`xpath=.//span[contains(text(), 'I have read and understand')]/ancestor::div[@class='form-input']//span[contains(@class,'form-input-checkbox__label')]`);
     this.createAccountButton = page.locator('[data-qa-action="sign-up-submit"]');
     this.error = page.locator('.form-input-error');
+    this.registerButton = page.locator('[data-qa-id="logon-view-alternate-button"]');
+    this.closeModalButton = page.locator('button[data-qa-id="close-modal"]');
   }
 
   async clickRegisterButton(): Promise<void> {
     await test.step(`clickRegisterButton`, async () => {
-      await this.page.locator('[data-qa-id="logon-view-alternate-button"]').click();
+      await this.registerButton.click();
     });
   }
-
-  async clickCreateAccountButton() {
-    await this.page.locator('[data-qa-action="sign-up-submit"]').click();
-  }
-
 
   async registerWithFakeData() {
     await test.step(`registration`, async () => {
@@ -90,8 +89,7 @@ export class RegistrationPage {
 
   async checkBotWarning() {
     await test.step(`checkBotWarning`, async () => {
-      await this.page.locator('button[data-qa-id="close-modal"]').click();
+      await this.closeModalButton.click();
     });
   }
-
 }
