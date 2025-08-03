@@ -10,8 +10,9 @@ test('Golden pass: Reject cookies, search product, manage cart, and register wit
            registrationPage,
          }) => {
     const productName = `FLORAL PRINT MIDI DRESS`;
+
     await test.step(`main page open`, async () => {
-      await page.goto('https://www.zara.com');
+      await page.goto('');
       await basePage.clickRejectCookies();
       await basePage.clickOnContinueButton();
     });
