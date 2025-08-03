@@ -1,18 +1,13 @@
-import { test } from '@playwright/test';
-import { BasePage } from '../src/pages/BasePage.po';
-import { SearchResultPage } from '../src/pages/SearchResultPage.po';
+import { test} from '../src/fixtures/fixtures';
 
-import { CartPage } from '../src/pages/CartPage.po';
-
-import { SearchComponent } from '../src/pages/SearchComponent.po';
-import { RegistrationPage } from '../src/pages/RegistrationPage.po';
-
-test('Golden pass: Reject cookies, search product, manage cart, and register with validation', async ({ page }) => {
-  const basePage = new BasePage(page);
-  const searchComponent = new SearchComponent(page);
-  const searchResultPage = new SearchResultPage(page);
-  const cartPage = new CartPage(page);
-  const registrationPage = new RegistrationPage(page);
+test('Golden pass: Reject cookies, search product, manage cart, and register with validation', async ({ 
+  page, 
+  basePage, 
+  searchComponent, 
+  searchResultPage, 
+  cartPage, 
+  registrationPage 
+}) => {
   const productName = `FLORAL PRINT MIDI DRESS`;
 
   await page.goto('https://www.zara.com');
